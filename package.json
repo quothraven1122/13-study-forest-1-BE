@@ -1,0 +1,28 @@
+{
+  "name": "13-study-forest-1-be",
+  "version": "1.0.0",
+  "description": "<img width=\"300\" height=\"150\" alt=\"image\" src=\"https://github.com/user-attachments/assets/9cd9281b-0f57-4eec-8918-e0c5bde8df8a\" />",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node prisma/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quothraven1122/13-study-forest-1-BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/quothraven1122/13-study-forest-1-BE/issues"
+  },
+  "homepage": "https://github.com/quothraven1122/13-study-forest-1-BE#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
