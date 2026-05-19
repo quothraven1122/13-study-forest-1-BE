@@ -15,6 +15,7 @@ model Study{
   nickname      String
   point         Int       @default(0)
   background    String
+  createdAt     DateTime  @default(now())
 
   reactions     Reaction[]
   habits        Habit[]
@@ -45,7 +46,6 @@ model Habit{
 model HabitLog{
   id          Int       @id @default(autoincrement())
   date        DateTime  
-  completed   Boolean   @default(false)
 
   habitId     Int
   habit       Habit     @relation(fields: [habitId], references: [id])
