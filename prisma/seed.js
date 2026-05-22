@@ -92,12 +92,79 @@ async function main() {
   console.log('✅ seeding 시작');
 
   // 기존 데이터 삭제
+  await prisma.habitLog.deleteMany();
+  await prisma.habit.deleteMany();
+  await prisma.reaction.deleteMany();
   await prisma.study.deleteMany();
   console.log('📝 기존 데이터 삭제 완료');
 
-  //seeding
+  //study seeding
   await prisma.study.createMany({ data: studies });
-  console.log(`🔎 ${studies.length}개 스터디 생성`);
+  console.log(`🔎 Study ${studies.length}개 생성 완료`);
+
+  //스터디 하나 불러오기
+  const sampleStudy = await prisma.study.findMany();
+  const sampleStudyId = sampleStudy[0].id;
+
+  //reaction seeding
+  const reactionResult = await prisma.reaction.createMany({
+    data: [
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '📝' },
+      { studyId: sampleStudyId, emoji: '📝' },
+      { studyId: sampleStudyId, emoji: '❤️' },
+      { studyId: sampleStudyId, emoji: '🥰' },
+      { studyId: sampleStudyId, emoji: '🍀' },
+      { studyId: sampleStudyId, emoji: '😄' },
+      { studyId: sampleStudyId, emoji: '👍' },
+      { studyId: sampleStudyId, emoji: '⭐' },
+    ],
+  });
+  console.log(`🔎 Reaction ${reactionResult.count}개 생성 완료`);
+
+  //habit seeding
+  const habitResult = await prisma.habit.createMany({
+    data: [
+      { studyId: sampleStudyId, name: '라이트 리플렉션' },
+      { studyId: sampleStudyId, name: '아포칼립스' },
+      { studyId: sampleStudyId, name: '트와일라잇 노바' },
+      { studyId: sampleStudyId, name: '메모라이즈' },
+      { studyId: sampleStudyId, name: '아마겟돈' },
+      { studyId: sampleStudyId, name: '앱솔루트 킬' },
+      { studyId: sampleStudyId, name: '퍼니싱 리소네이터' },
+      { studyId: sampleStudyId, name: '리버레이션 오브' },
+      { studyId: sampleStudyId, name: '빛과 어둠의 세례' },
+      { studyId: sampleStudyId, name: '진리의 문' },
+      { studyId: sampleStudyId, name: '하모닉 패러독스' },
+    ],
+  });
+  console.log(`🔎 Habit ${habitResult.count}개 생성 완료`);
+
+  //habit log seeding
+  const sampleHabit = await prisma.habit.findMany();
+  const habit1Id = sampleHabit[0].id;
+  const habit2Id = sampleHabit[1].id;
+  const habit3Id = sampleHabit[2].id;
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit1Id, date: new Date('2026-05-18') },
+      { habitId: habit1Id, date: new Date('2026-05-20') },
+      { habitId: habit1Id, date: new Date('2026-05-21') },
+      { habitId: habit1Id, date: new Date('2026-05-23') },
+    ],
+  });
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit2Id, date: new Date('2026-05-18') },
+      { habitId: habit2Id, date: new Date('2026-05-19') },
+    ],
+  });
+  await prisma.habitLog.createMany({
+    data: [{ habitId: habit3Id, date: new Date('2026-05-18') }],
+  });
+  console.log(`🔎 HabitLog 생성 완료`);
 }
 
 main()
