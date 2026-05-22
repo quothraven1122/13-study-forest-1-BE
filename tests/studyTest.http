@@ -1,6 +1,22 @@
-@baseUrl = http://localhost:3000/studies/70
+@baseUrl = http://localhost:3000/studies/90
 
 ### 3. 스터디 상세 페이지 
 ### 스터디 상세 내용 부르기
 
 GET {{baseUrl}}
+
+### 비밀번호 확인하기
+
+POST {{baseUrl}}/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "wrongpassword"
+}
+
+POST {{baseUrl}}/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "luminus1234!@"
+}

@@ -39,3 +39,27 @@ export const getStudyDetail = async (req, res) => {
 
   return res.status(200).json({ ...study, reactions, habits: habitLogs });
 };
+
+export const postPwCheck = async (req, res) => {
+  const { studyId } = req.params;
+  const { password: pwInput } = req.body;
+
+  const pw = await prisma.study.findUnique({
+    where: {
+      id: Number(studyId),
+    },
+    select: {
+      password: true,
+    },
+  });
+
+  if (pwInput !== pw.password) {
+    return res.status(401).json({
+      success: false,
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+  });
+};

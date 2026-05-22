@@ -143,7 +143,9 @@ async function main() {
   console.log(`🔎 Habit ${habitResult.count}개 생성 완료`);
 
   //habit log seeding
-  const sampleHabit = await prisma.habit.findMany();
+  const sampleHabit = await prisma.habit.findMany({
+    where: { studyId: sampleStudyId },
+  });
   const habit1Id = sampleHabit[0].id;
   const habit2Id = sampleHabit[1].id;
   const habit3Id = sampleHabit[2].id;
