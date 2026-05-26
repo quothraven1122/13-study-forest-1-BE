@@ -24,4 +24,3 @@ app.post('/studies/:studyId/habits', createHabit);
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
 });
-app.post('/studies/:studyId/habits', createHabit);
