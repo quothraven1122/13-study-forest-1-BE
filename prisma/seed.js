@@ -149,6 +149,8 @@ async function main() {
   const habit1Id = sampleHabit[0].id;
   const habit2Id = sampleHabit[1].id;
   const habit3Id = sampleHabit[2].id;
+  const habit4Id = sampleHabit[3].id;
+
   await prisma.habitLog.createMany({
     data: [
       { habitId: habit1Id, date: new Date('2026-05-18') },
@@ -165,6 +167,16 @@ async function main() {
   });
   await prisma.habitLog.createMany({
     data: [{ habitId: habit3Id, date: new Date('2026-05-18') }],
+  });
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit4Id, date: new Date('2026-05-19') },
+      { habitId: habit4Id, date: new Date('2026-05-18') },
+      { habitId: habit4Id, date: new Date('2026-05-17') },
+      { habitId: habit4Id, date: new Date('2026-05-16') },
+      { habitId: habit4Id, date: new Date('2026-05-15') },
+      { habitId: habit4Id, date: new Date('2026-05-09') },
+    ],
   });
   console.log(`🔎 HabitLog 생성 완료`);
 }
