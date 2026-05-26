@@ -1,6 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { getStudyDetail, createStudy } from './controllers/index.js';
+import {
+  getStudyDetail,
+  createStudy,
+  getAllStudy,
+} from './controllers/index.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -11,7 +15,7 @@ app.use(express.json());
 
 app.get('/studies/:studyId', getStudyDetail);
 
-app.get('/studies',getAllStudy)
+app.get('/studies', getAllStudy);
 app.post('/studies', createStudy);
 
 app.listen(process.env.PORT || 3000, () => {
