@@ -1,6 +1,19 @@
-@baseUrl = http://localhost:3000/studies/70
+@baseUrl = http://localhost:3000/studies
 
 ### 3. 스터디 상세 페이지 
 ### 스터디 상세 내용 부르기
 
-GET {{baseUrl}}
+GET {{baseUrl}}/70
+
+###스터디 생성
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name":"스터디생성테스트2",
+  "description":"스터디설명막적기2",
+  "password":"12312322",
+  "nickname":"홍길동2",
+  "background":"이미지2"
+}
