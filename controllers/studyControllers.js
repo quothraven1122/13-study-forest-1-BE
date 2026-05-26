@@ -30,6 +30,9 @@ export const getStudyDetail = async (req, res) => {
 
   //스터디 관련 습관 로그 정보 불러오기
   let habitLogs = await prisma.habit.findMany({
+    where: {
+      studyId: Number(studyId),
+    },
     include: {
       habitLogs: {
         where: {
