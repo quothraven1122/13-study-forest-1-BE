@@ -5,6 +5,22 @@
 
 GET {{baseUrl}}/130
 
+### 비밀번호 확인하기
+
+POST {{baseUrl}}/130/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "wrongpassword"
+}
+
+POST {{baseUrl}}/130/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "luminus1234!@"
+}
+
 ###스터디 생성
 
 POST {{baseUrl}}
