@@ -11,9 +11,23 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "name":"스터디생성테스트2",
-  "description":"스터디설명막적기2",
-  "password":"12312322",
-  "nickname":"홍길동2",
-  "background":"이미지2"
+  "name":"스터디포인트 테스트",
+  "description":"스터디 설명",
+  "password":"12312000",
+  "nickname":"곽서현",
+  "background":"img"
 }
+
+### 오늘의 집중 api 테스트 
+### studies의 name 가져오기 
+GET {{baseUrl}}/143/focus 
+
+
+### 포인트 patch
+PATCH {{baseUrl}}/143/focus
+Content-Type: application/json
+
+{
+  "points": 20
+}
+
