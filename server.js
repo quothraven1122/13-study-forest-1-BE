@@ -1,11 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import {
-  getStudyDetail,
-  createStudy,
-  getStudyFocus,
-  patchStudyPoint,
-} from './controllers/index.js';
+import { getStudyDetail, createStudy } from './controllers/index.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -17,10 +12,6 @@ app.use(express.json());
 app.get('/studies/:studyId', getStudyDetail);
 
 app.post('/studies', createStudy);
-
-// 오늘의 집중 페이지 api
-app.get('/studies/:studyId/focus', getStudyFocus);
-app.patch('/studies/:studyId/focus', patchStudyPoint);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
