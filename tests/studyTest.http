@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 
 ### 반응하기
-POST http://localhost:3000/studies/130/emoji
+POST {{baseUrl}}/130/emoji
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ### 습관 추가하기
-POST http://localhost:3000/studies/130/habits
+POST {{baseUrl}}/130/habits
 Content-Type: application/json
 
 {
