@@ -7,47 +7,50 @@ datasource db {
   url      = env("DB_URL")
 }
 
-model Study{
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String
-  password      String
-  nickname      String
-  point         Int       @default(0)
-  background    String
-  createdAt     DateTime  @default(now())
+model Study {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String
+  password    String
+  nickname    String
+  point       Int      @default(0)
+  background  String
+  createdAt   DateTime @default(now())
 
-  reactions     Reaction[]
-  habits        Habit[]
+  reactions Reaction[]
+  habits    Habit[]
 
   @@map("studies")
 }
 
-model Reaction{
-  id        Int       @id @default(autoincrement())
-  emoji     String  
+model Reaction {
+  id    Int    @id @default(autoincrement())
+  emoji String
 
-  studyId   Int
-  study     Study     @relation(fields: [studyId], references: [id])
+  studyId Int
+  study   Study @relation(fields: [studyId], references: [id])
+
   @@map("reactions")
 }
 
-model Habit{
-  id          Int       @id @default(autoincrement())
-  name        String
+model Habit {
+  id   Int    @id @default(autoincrement())
+  name String
 
-  habitLogs   HabitLog[] 
+  habitLogs HabitLog[]
 
-  studyId     Int
-  study       Study     @relation(fields: [studyId], references: [id])
+  studyId Int
+  study   Study @relation(fields: [studyId], references: [id])
+
   @@map("habits")
 }
 
-model HabitLog{
-  id          Int       @id @default(autoincrement())
-  date        DateTime  
+model HabitLog {
+  id   Int      @id @default(autoincrement())
+  date DateTime
 
-  habitId     Int
-  habit       Habit     @relation(fields: [habitId], references: [id])
+  habitId Int
+  habit   Habit @relation(fields: [habitId], references: [id])
+
   @@map("habitLogs")
 }

@@ -6,7 +6,7 @@ export const getStudyDetail = async (req, res) => {
   const { startOfWeek, endOfWeek } = getStartAndEndOfWeek();
 
   //스터디 상세 정보 불러오기
-  const study = await prisma.study.findUnique({
+  const study = await prisma.study.findUniqueOrThrow({
     where: { id: Number(studyId) },
   });
 
