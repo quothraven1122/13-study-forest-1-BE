@@ -1,6 +1,6 @@
 import z from 'zod';
 
-const createHabitSchema = z.object({
+export const createHabitSchema = z.object({
   name: z
     .string()
     .min(1, '습관은 1글자 이상이어야 합니다')
