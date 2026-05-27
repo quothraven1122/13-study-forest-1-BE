@@ -5,6 +5,7 @@ import {
   createStudy,
   getStudyFocus,
   patchStudyPoint,
+  postPwCheck,
 } from './controllers/index.js';
 import cors from 'cors';
 
@@ -15,7 +16,7 @@ app.use(cors({ origin: process.env.CORS_LOCAL }));
 app.use(express.json());
 
 app.get('/studies/:studyId', getStudyDetail);
-
+app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 
 // 오늘의 집중
