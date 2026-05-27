@@ -13,7 +13,7 @@ export const getStudyFocus = async (req, res) => {
     const study = await prisma.study.findUnique({
       where: { id: Number(studyId) },
       select: {
-        name: true,
+        nickname: true,
         point: true,
       },
     });
