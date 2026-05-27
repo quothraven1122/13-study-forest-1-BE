@@ -4,6 +4,7 @@ import {
   getStudyDetail,
   createStudy,
   getAllStudy,
+  postPwCheck,
 } from './controllers/index.js';
 import cors from 'cors';
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.get('/studies/:studyId', getStudyDetail);
 
 app.get('/studies', getAllStudy);
+app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 
 app.listen(process.env.PORT || 3000, () => {
