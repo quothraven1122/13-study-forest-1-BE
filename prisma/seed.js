@@ -1,0 +1,191 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+//Study Seed 생성
+const studies = [
+  {
+    name: '빛과 어둠의 스터디',
+    description: '모두 함께 이퀴리브리엄에 도달해봅시다.',
+    password: 'luminus1234!@',
+    nickname: '루미너스',
+    background:
+      'https://png.pngtree.com/thumb_back/fh260/background/20241124/pngtree-celestial-circle-of-light-in-space-emitting-a-soft-glow-amidst-image_16630308.jpg',
+  },
+  {
+    name: '드레곤 마스터의 길',
+    description: '미르 훈련하기 빡세요 ㅠㅠ 같이 배워나갑시다',
+    password: 'evan1234!@',
+    nickname: '에반',
+    background:
+      'https://i.namu.wiki/i/v_zK7er3cBXRkKPgXQKyFnRNCBOmGDKRwDGUI92DDImUKG2kFa8RLZrJdeEZCXnpj8Lsp1efiIFkNwJhQNo3lw.webp',
+  },
+  {
+    name: '카드 마술 익히기',
+    description: '카드로 사람 패는거 배워보고 싶지 않아?',
+    password: 'phantom1234!@',
+    nickname: '팬텀',
+    background:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/AcetoFive.JPG/1280px-AcetoFive.JPG',
+  },
+  {
+    name: '폴암 휘두르기 맹연습',
+    description: '봉인 됐다가 다시 폴압 휘두르려니까 너무 힘드네',
+    password: 'aran1234!@',
+    nickname: '아란',
+    background:
+      'https://cdn.imweb.me/upload/S201901155c3d45c030b1a/5c3f4bd73e009.png',
+  },
+  {
+    name: '정령과 대화하기',
+    description: '각종 동물 정령과 대화하는 법 익히기',
+    password: 'eunwol1234!@',
+    nickname: '은월',
+    background:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIzS6jib8UzBdBBDr9TFsZY0qs6SLqoQU_Eg&s',
+  },
+  {
+    name: '화살 마스터',
+    description: '듀얼 보우건으로 니들 다 패버릴거야',
+    password: 'mercedes1234!@',
+    nickname: '메르세데스',
+    background:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJTI80aFfSGs-0JhK54lx5bzzt2MlN5I23bQ&s',
+  },
+  {
+    name: '시간 마술',
+    description: '네 시간 순삭되게 해줄게 ^0^',
+    password: 'freud1234!@',
+    nickname: '프리드',
+    background:
+      'https://i.namu.wiki/i/0SGoftrehJuPefLVXRPwjyDlkqg0bCp6ZEj4JsHtSDH-WyEIB4I2vdcCDZ_hM4YrHG8jKFytvfoCDMmmgAWAlQ.webp',
+  },
+  {
+    name: '간호학 101',
+    description: '내말 안들으면 힐 안해줌',
+    password: 'bishop1234!@',
+    nickname: '비숍',
+    background:
+      'https://i.namu.wiki/i/lZoMNR1GxpifZDc57AIQdBBTqsqmIjSkhMhx6CiMjOx9Dcw3AyI-HHU5yKemfGyW20zUrL53hnC91o9zIZj1IQ.webp',
+  },
+  {
+    name: '집안 다시 일으키기',
+    description: '군대 갔다 오면 집 지켜준다 한 대장 죽여버릴거임',
+    password: 'demon1234!@',
+    nickname: '데몬 어벤져',
+    background:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfUNP9XPH7JHoT2qSD5ho2VHL7qkYQSWtXqA&s',
+  },
+  {
+    name: '가창력! 포즈 취하기!',
+    description:
+      '안녕하세요, 엔젤입니다! 노래의 힘으로 모든 것을 해결할거에요!!!!',
+    password: 'angel1234!@',
+    nickname: '엔젤릭버스터',
+    background:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm4pIO9xB_li3ENmX4gRTgcdRbTC7sHMUJCQ&s',
+  },
+];
+
+async function main() {
+  //seeding 시작
+  console.log('✅ seeding 시작');
+
+  // 기존 데이터 삭제
+  await prisma.habitLog.deleteMany();
+  await prisma.habit.deleteMany();
+  await prisma.reaction.deleteMany();
+  await prisma.study.deleteMany();
+  console.log('📝 기존 데이터 삭제 완료');
+
+  //study seeding
+  await prisma.study.createMany({ data: studies });
+  console.log(`🔎 Study ${studies.length}개 생성 완료`);
+
+  //스터디 하나 불러오기
+  const sampleStudy = await prisma.study.findMany();
+  const sampleStudyId = sampleStudy[0].id;
+
+  //reaction seeding
+  const reactionResult = await prisma.reaction.createMany({
+    data: [
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '🎉' },
+      { studyId: sampleStudyId, emoji: '📝' },
+      { studyId: sampleStudyId, emoji: '📝' },
+      { studyId: sampleStudyId, emoji: '❤️' },
+      { studyId: sampleStudyId, emoji: '🥰' },
+      { studyId: sampleStudyId, emoji: '🍀' },
+      { studyId: sampleStudyId, emoji: '😄' },
+      { studyId: sampleStudyId, emoji: '👍' },
+      { studyId: sampleStudyId, emoji: '⭐' },
+    ],
+  });
+  console.log(`🔎 Reaction ${reactionResult.count}개 생성 완료`);
+
+  //habit seeding
+  const habitResult = await prisma.habit.createMany({
+    data: [
+      { studyId: sampleStudyId, name: '라이트 리플렉션' },
+      { studyId: sampleStudyId, name: '아포칼립스' },
+      { studyId: sampleStudyId, name: '트와일라잇 노바' },
+      { studyId: sampleStudyId, name: '메모라이즈' },
+      { studyId: sampleStudyId, name: '아마겟돈' },
+      { studyId: sampleStudyId, name: '앱솔루트 킬' },
+      { studyId: sampleStudyId, name: '퍼니싱 리소네이터' },
+      { studyId: sampleStudyId, name: '리버레이션 오브' },
+      { studyId: sampleStudyId, name: '빛과 어둠의 세례' },
+      { studyId: sampleStudyId, name: '진리의 문' },
+      { studyId: sampleStudyId, name: '하모닉 패러독스' },
+    ],
+  });
+  console.log(`🔎 Habit ${habitResult.count}개 생성 완료`);
+
+  //habit log seeding
+  const sampleHabit = await prisma.habit.findMany({
+    where: { studyId: sampleStudyId },
+  });
+  const habit1Id = sampleHabit[0].id;
+  const habit2Id = sampleHabit[1].id;
+  const habit3Id = sampleHabit[2].id;
+  const habit4Id = sampleHabit[3].id;
+
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit1Id, date: new Date('2026-05-18') },
+      { habitId: habit1Id, date: new Date('2026-05-20') },
+      { habitId: habit1Id, date: new Date('2026-05-21') },
+      { habitId: habit1Id, date: new Date('2026-05-23') },
+    ],
+  });
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit2Id, date: new Date('2026-05-18') },
+      { habitId: habit2Id, date: new Date('2026-05-19') },
+    ],
+  });
+  await prisma.habitLog.createMany({
+    data: [{ habitId: habit3Id, date: new Date('2026-05-18') }],
+  });
+  await prisma.habitLog.createMany({
+    data: [
+      { habitId: habit4Id, date: new Date('2026-05-19') },
+      { habitId: habit4Id, date: new Date('2026-05-18') },
+      { habitId: habit4Id, date: new Date('2026-05-17') },
+      { habitId: habit4Id, date: new Date('2026-05-16') },
+      { habitId: habit4Id, date: new Date('2026-05-15') },
+      { habitId: habit4Id, date: new Date('2026-05-09') },
+    ],
+  });
+  console.log(`🔎 HabitLog 생성 완료`);
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

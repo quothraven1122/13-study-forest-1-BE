@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:3000/studies
+
+### 3. 스터디 상세 페이지 
+### 스터디 상세 내용 부르기
+
+GET {{baseUrl}}/130
+
+### 비밀번호 확인하기
+
+POST {{baseUrl}}/130/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "wrongpassword"
+}
+
+POST {{baseUrl}}/130/confirm-pw
+Content-Type: application/json
+
+{
+    "password": "luminus1234!@"
+}
+
+###스터디 생성
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name":"스터디생성테스트2",
+  "description":"스터디설명막적기2",
+  "password":"12312322",
+  "nickname":"홍길동2",
+  "background":"이미지2"
+}
