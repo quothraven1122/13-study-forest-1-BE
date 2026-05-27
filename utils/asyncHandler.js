@@ -9,16 +9,18 @@ export const asyncHandler = (fn) => {
       //zod유효성 검사에러에 걸렸을 때 처리
       if (err instanceof z.ZodError) {
         return res.status(400).json({
-          errors: err.errors.mae((e) => ({
+          success: false,
+          errors: err.errors.map((e) => ({
             field: e.path.join('.'),
             message: e.message,
           })),
         });
       }
 
-      //없는 id로 요청시 에러 발생
+      //ex) 없는 id로 요청시 에러 발생
       if (err.code === 'P2025') {
         return res.status(404).json({
+          success: false,
           message: '데이터를 찾을 수 없습니다',
         });
       }
@@ -26,6 +28,7 @@ export const asyncHandler = (fn) => {
       //중복되는 데이터 일 때 에러 발생 ex)스터디 이름 중복
       if (err.code === 'P2002') {
         return res.status(409).json({
+          success: false,
           message: '중복되는 데이터 입니다',
         });
       }
@@ -33,12 +36,14 @@ export const asyncHandler = (fn) => {
       //HTTPError에 등록해놓은 에러 발생시 에러처리
       if (err instanceof HttpError) {
         return res.status(err.status).json({
+          success: false,
           message: err.message,
         });
       }
 
       //이 외에 서버에러 발생 시 에러 처리
       res.status(500).json({
+        success: false,
         message: '서버 에러가 발생했습니다',
       });
     }
