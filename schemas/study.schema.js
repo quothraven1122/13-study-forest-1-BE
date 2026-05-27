@@ -1,4 +1,5 @@
 import z from 'zod';
+
 /// 스터디 생성 유효성 검사
 export const createStudySchema = z.object({
   name: z
@@ -18,6 +19,7 @@ export const createStudySchema = z.object({
     .min(1, '닉네임은 1글자 이상이어야 합니다')
     .max(20, '닉네임은 20글자 이하여야 합니다'),
 });
+
 /// 스터디 수정 유효성 검사
 export const updateStudySchema = z.object({
   name: z
@@ -38,4 +40,16 @@ export const updateStudySchema = z.object({
     .min(1, '닉네임은 1글자 이상이어야 합니다')
     .max(20, '닉네임은 20글자 이하여야 합니다')
     .optional(),
+});
+
+/// Query 유효성 검사
+export const getAllStudyQuerySchema = z.object({
+  search: z.string().trim().optional(),
+  page: z.coerce.number().int().positive().optional(),
+  sort: z.enum(['recent', 'oldest', 'lowPoint', 'highPoint']).optional(),
+});
+
+/// studyId 유효성 검사
+export const studyIdParamSchema = z.object({
+  studyId: z.coerce.number().int().positive(),
 });

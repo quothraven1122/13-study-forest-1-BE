@@ -8,3 +8,7 @@ export const habitSchema = z.object({
     .max(20, '습관은 20글자 이하여야 합니다'),
 });
 
+/// habitId 유효성 검사
+export const habitIdParamSchema = z.object({
+  habitId: z.coerce.number().int().positive(),
+});
