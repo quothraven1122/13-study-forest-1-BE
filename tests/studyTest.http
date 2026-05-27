@@ -34,18 +34,8 @@ Content-Type: application/json
   "background":"이미지2"
 }
 
-### 오늘의 집중 api 테스트 
-POST {{baseUrl}}
-Content-Type: application/json
-{
-  "name":"스터디포인트 테스트",
-  "description":"스터디 설명",
-  "password":"12312000",
-  "nickname":"곽서현",
-  "background":"img"
-}
-
-### studies의 name 가져오기 
+### 오늘의 집중 페이지 api test 
+### studies의 name,point 가져오기 
 GET {{baseUrl}}/143/focus 
 
 
@@ -54,6 +44,6 @@ PATCH {{baseUrl}}/143/focus
 Content-Type: application/json
 
 {
-  "points": 20
+  "points": 3
 }
 
