@@ -19,7 +19,7 @@ app.get('/studies/:studyId', getStudyDetail);
 app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
-//app.post('/studies/:studyId/habits', createHabit);
+app.post('/studies/:studyId/habits', createHabit);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
