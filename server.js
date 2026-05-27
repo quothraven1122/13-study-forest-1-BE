@@ -5,7 +5,7 @@ import {
   createStudy,
   postPwCheck,
   createEmoji,
-  //  createHabit,
+  createHabit,
 } from './controllers/index.js';
 import cors from 'cors';
 
