@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import {
   getStudyDetail,
   createStudy,
+  getAllStudy,
   getStudyFocus,
   patchStudyPoint,
   postPwCheck,
@@ -18,6 +19,8 @@ app.use(cors({ origin: process.env.CORS_LOCAL }));
 app.use(express.json());
 
 app.get('/studies/:studyId', getStudyDetail);
+
+app.get('/studies', getAllStudy);
 app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
