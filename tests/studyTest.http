@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 
 ### 오늘의 집중 페이지 api test 
-### studies의 name,point 가져오기 
+### studies의 name,nickname,point 가져오기 
 GET {{baseUrl}}/143/focus 
 
 
