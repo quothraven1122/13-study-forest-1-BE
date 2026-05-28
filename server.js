@@ -7,9 +7,10 @@ import {
   createStudy,
   postPwCheck,
   createEmoji,
+  createHabit,
+  updateHabit,
+  deleteHabit,
 } from './controllers/index.js';
-
-import { updateHabit, deleteHabit } from './controllers/habits.controller.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
 
+app.post('/studies/:studyId/habits', createHabit);
 app.patch('/studies/:studyId/habits/:habitId', updateHabit);
 app.delete('/studies/:studyId/habits/:habitId', deleteHabit);
 
