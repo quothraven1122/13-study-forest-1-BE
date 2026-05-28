@@ -34,6 +34,19 @@ Content-Type: application/json
   "background":"이미지2"
 }
 
+### 오늘의 집중 페이지 api test 
+### studies의 name,point 가져오기 
+GET {{baseUrl}}/143/focus 
+
+
+### 포인트 patch
+PATCH {{baseUrl}}/143/focus
+Content-Type: application/json
+
+{
+  "points": 3
+}
+
 ### 반응하기
 POST {{baseUrl}}/130/emoji
 Content-Type: application/json

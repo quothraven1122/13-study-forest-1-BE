@@ -4,9 +4,11 @@ import {
   getStudyDetail,
   createStudy,
   getAllStudy,
+  getStudyFocus,
+  patchStudyPoint,
   postPwCheck,
   createEmoji,
-  //  createHabit,
+  createHabit,
 } from './controllers/index.js';
 import cors from 'cors';
 
@@ -22,7 +24,11 @@ app.get('/studies', getAllStudy);
 app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
-//app.post('/studies/:studyId/habits', createHabit);
+app.post('/studies/:studyId/habits', createHabit);
+
+// 오늘의 집중
+app.get('/studies/:studyId/focus', getStudyFocus);
+app.patch('/studies/:studyId/focus', patchStudyPoint);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
