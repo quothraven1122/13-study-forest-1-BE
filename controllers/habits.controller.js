@@ -116,6 +116,14 @@ export const deleteHabit = async (req, res, next) => {
       });
     }
 
+    // 이 습관에 연결된 기록 먼저 삭제
+    await prisma.habitLog.deleteMany({
+      where: {
+        habitId: habitIdNum,
+      },
+    });
+
+    // 그 다음 습관 삭제
     await prisma.habit.delete({
       where: {
         id: habitIdNum,
