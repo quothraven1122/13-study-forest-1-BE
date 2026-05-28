@@ -1,25 +1,15 @@
 import prisma from '../prisma/index.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-export const createStudy = async (req, res) => {
-  try {
-    const { name, description, password, nickname, background } = req.body;
+export const createStudy = asyncHandler(async (req, res) => {
+  const { name, description, password, nickname, background } = req.body;
 
-    if (!name || !description || !password || !nickname || !background) {
-      return res
-        .status(400)
-        .json({ message: '필수 가입 요구사항 입력 데이터 누락' });
-    }
+  const newStudy = await prisma.study.create({
+    data: { name, description, password, nickname, background },
+    omit: { password: true },
+  });
 
-    const newStudy = await prisma.study.create({
-      data: { name, description, password, nickname, background },
-    });
-
-    res.status(201).json({
-      ...newStudy,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-};
+  res.status(201).json({
+    ...newStudy,
+  });
+});

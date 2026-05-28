@@ -1,7 +1,9 @@
 import prisma from '../prisma/index.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 import { getStartAndEndOfWeek } from '../utils/date.js';
+import { InvalidPasswordError } from '../utils/error.js';
 
-export const getStudyDetail = async (req, res) => {
+export const getStudyDetail = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { startOfWeek, endOfWeek } = getStartAndEndOfWeek();
 
@@ -50,13 +52,13 @@ export const getStudyDetail = async (req, res) => {
   }, {});
 
   return res.status(200).json({ ...study, reactions, habits: habitLogs });
-};
+});
 
-export const postPwCheck = async (req, res) => {
+export const postPwCheck = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { password: pwInput } = req.body;
 
-  const pw = await prisma.study.findUnique({
+  const pw = await prisma.study.findUniqueOrThrow({
     where: {
       id: Number(studyId),
     },
@@ -65,13 +67,9 @@ export const postPwCheck = async (req, res) => {
     },
   });
 
-  if (pwInput !== pw.password) {
-    return res.status(401).json({
-      success: false,
-    });
-  }
+  if (pwInput !== pw.password) throw new InvalidPasswordError();
 
   return res.status(200).json({
     success: true,
   });
-};
+});
