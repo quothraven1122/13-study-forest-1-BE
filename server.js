@@ -36,6 +36,9 @@ app.get('/studies/:studyId/habits', getHabits);
 app.patch('/studies/:studyId/habits/:habitId', updateHabit);
 app.delete('/studies/:studyId/habits/:habitId', deleteHabit);
 
+app.get(`/studies/:studyId/focus`, getStudyFocus);
+app.patch(`/studies/:studyId/focus`, patchStudyPoint);
+
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
 });
