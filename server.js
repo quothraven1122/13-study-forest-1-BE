@@ -12,6 +12,7 @@ import {
   postPwCheck,
   createEmoji,
   createHabit,
+  getHabits,
   updateHabit,
   deleteHabit,
 } from './controllers/index.js';
@@ -31,6 +32,7 @@ app.post('/studies', createStudy);
 app.delete('/studies/:studyId', deleteStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
 app.post('/studies/:studyId/habits', createHabit);
+app.get('/studies/:studyId/habits', getHabits);
 app.patch('/studies/:studyId/habits/:habitId', updateHabit);
 app.delete('/studies/:studyId/habits/:habitId', deleteHabit);
 
