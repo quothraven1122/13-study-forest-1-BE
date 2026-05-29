@@ -5,6 +5,9 @@ import cors from 'cors';
 import {
   getStudyDetail,
   createStudy,
+  getAllStudy,
+  getStudyFocus,
+  patchStudyPoint,
   postPwCheck,
   createEmoji,
   createHabit,
@@ -20,10 +23,12 @@ app.use(cors({ origin: process.env.CORS_LOCAL }));
 app.use(express.json());
 
 app.get('/studies/:studyId', getStudyDetail);
+
+app.get('/studies', getAllStudy);
 app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
+app.delete('/studies/:studyId', deleteStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
-
 app.post('/studies/:studyId/habits', createHabit);
 app.patch('/studies/:studyId/habits/:habitId', updateHabit);
 app.delete('/studies/:studyId/habits/:habitId', deleteHabit);
