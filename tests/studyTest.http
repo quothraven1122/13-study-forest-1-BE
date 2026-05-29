@@ -35,16 +35,16 @@ Content-Type: application/json
 }
 
 ### 스터디 삭제하기
-DELETE {{baseUrl}}/130
+DELETE {{baseUrl}}/148
 Content-Type: application/json
 
 {
-  "password": "luminus1234!@"
+  "password": "test1234!@"
 }
 
 ### 오늘의 집중 페이지 api test 
 ### studies의 name,nickname,point 가져오기 
-GET {{baseUrl}}/143/focus 
+GET {{baseUrl}}/130/focus 
 
 
 ### 포인트 patch

@@ -6,6 +6,7 @@ import {
   getStudyDetail,
   createStudy,
   getAllStudy,
+  deleteStudy,
   getStudyFocus,
   patchStudyPoint,
   postPwCheck,
