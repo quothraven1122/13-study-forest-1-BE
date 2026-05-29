@@ -14,6 +14,7 @@ import {
   getHabits,
   updateHabit,
   deleteHabit,
+  deleteStudy,
 } from './controllers/index.js';
 
 dotenv.config();
