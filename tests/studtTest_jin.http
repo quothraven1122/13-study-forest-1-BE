@@ -1,3 +1,11 @@
 @baseUrl = http://localhost:3000
 
 GET {{baseUrl}}/studies?page=1
+
+###
+PATCH {{baseUrl}}/studies/50
+Content-Type:application/json
+
+{
+  "name":"뭐요22"
+}
