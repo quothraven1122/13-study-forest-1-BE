@@ -5,4 +5,9 @@ export * from './pointController.js';
 export * from './emojiController.js';
 export * from './deleteStudyController.js';
 
-export { createHabit, updateHabit, deleteHabit } from './habitController.js';
+export {
+  createHabit,
+  getHabits,
+  updateHabit,
+  deleteHabit,
+} from './habitController.js';

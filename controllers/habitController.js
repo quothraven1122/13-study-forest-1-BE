@@ -53,6 +53,45 @@ export const createHabit = async (req, res) => {
   }
 };
 
+export const getHabits = async (req, res, next) => {
+  try {
+    const { studyId } = req.params;
+
+    const studyIdNum = Number(studyId);
+
+    if (Number.isNaN(studyIdNum)) {
+      return res.status(400).json({
+        message: '잘못된 요청입니다.',
+      });
+    }
+
+    const study = await prisma.study.findUnique({
+      where: {
+        id: studyIdNum,
+      },
+    });
+
+    if (!study) {
+      return res.status(404).json({
+        message: '존재하지 않는 스터디입니다.',
+      });
+    }
+
+    const habits = await prisma.habit.findMany({
+      where: {
+        studyId: studyIdNum,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return res.status(200).json(habits);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateHabit = async (req, res, next) => {
   try {
     const { studyId, habitId } = req.params;
