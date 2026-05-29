@@ -9,6 +9,7 @@ import {
   postPwCheck,
   createEmoji,
   createHabit,
+  deleteStudy,
 } from './controllers/index.js';
 import cors from 'cors';
 
@@ -23,6 +24,7 @@ app.get('/studies/:studyId', getStudyDetail);
 app.get('/studies', getAllStudy);
 app.post('/studies/:studyId/confirm-pw', postPwCheck);
 app.post('/studies', createStudy);
+app.delete('/studies/:studyId', deleteStudy);
 app.post('/studies/:studyId/emoji', createEmoji);
 app.post('/studies/:studyId/habits', createHabit);
 
