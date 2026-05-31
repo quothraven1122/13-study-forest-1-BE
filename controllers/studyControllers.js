@@ -45,7 +45,10 @@ export const getStudyDetail = async (req, res) => {
     },
   });
   habitLogs = habitLogs.reduce((acc, cur) => {
-    acc[cur.name] = cur.habitLogs.map((log) => log.date);
+    acc[cur.id] = {
+      name: cur.name,
+      values: cur.habitLogs.map((log) => log.date),
+    };
     return acc;
   }, {});
 
