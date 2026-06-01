@@ -1,2 +1,2 @@
-export * from './studyControllers.js';
-export * from './habitController.js';
+export * from './study.controller.js';
+export * from './habit.controller.js';
