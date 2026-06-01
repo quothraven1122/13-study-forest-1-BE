@@ -9,11 +9,7 @@ datasource db {
 
 model Study {
   id          Int      @id @default(autoincrement())
-<<<<<<< HEAD
   name        String   @unique
-=======
-  name        String
->>>>>>> 0139aeff65e8177fa189fb52361e22ac553ebba4
   description String
   password    String
   nickname    String
@@ -32,11 +28,7 @@ model Reaction {
   emoji String
 
   studyId Int
-<<<<<<< HEAD
-  study   Study @relation(fields: [studyId], references: [id])
-=======
   study   Study @relation(fields: [studyId], references: [id], onDelete: Cascade)
->>>>>>> 0139aeff65e8177fa189fb52361e22ac553ebba4
 
   @@map("reactions")
 }
@@ -48,11 +40,7 @@ model Habit {
   habitLogs HabitLog[]
 
   studyId Int
-<<<<<<< HEAD
-  study   Study @relation(fields: [studyId], references: [id])
-=======
   study   Study @relation(fields: [studyId], references: [id], onDelete: Cascade)
->>>>>>> 0139aeff65e8177fa189fb52361e22ac553ebba4
 
   @@map("habits")
 }
@@ -62,11 +50,7 @@ model HabitLog {
   date DateTime
 
   habitId Int
-<<<<<<< HEAD
-  habit   Habit @relation(fields: [habitId], references: [id])
-=======
   habit   Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
->>>>>>> 0139aeff65e8177fa189fb52361e22ac553ebba4
 
   @@map("habitLogs")
 }

@@ -33,6 +33,13 @@ export const asyncHandler = (fn) => {
         });
       }
 
+      if (err.code === 'P2003') {
+        return res.status(404).json({
+          success: false,
+          message: '참조하는 데이터가 존재하지 않습니다',
+        });
+      }
+
       //HTTPError에 등록해놓은 에러 발생시 에러처리
       if (err instanceof HttpError) {
         return res.status(err.status).json({
