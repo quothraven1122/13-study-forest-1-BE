@@ -1,13 +1,2 @@
-export * from './studyControllers.js';
-export * from './createStudyController.js';
-export * from './studyGetController.js';
-export * from './pointController.js';
-export * from './emojiController.js';
-export * from './deleteStudyController.js';
-
-export {
-  createHabit,
-  getHabits,
-  updateHabit,
-  deleteHabit,
-} from './habitController.js';
+export * from './study.controller.js';
+export * from './habit.controller.js';
