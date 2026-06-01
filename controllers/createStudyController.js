@@ -23,3 +23,15 @@ export const createStudy = async (req, res) => {
     });
   }
 };
+
+export const updateStudy = async (req, res) => {
+  const { studyId } = req.params;
+  const { name, description, nickname, background } = req.body;
+
+  const study = await prisma.study.update({
+    where: { id: Number(studyId) },
+    data: { name, description, nickname, background },
+  });
+
+  res.status(200).json({ success: true, id: Number(studyId) });
+};
