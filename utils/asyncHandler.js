@@ -33,6 +33,7 @@ export const asyncHandler = (fn) => {
         });
       }
 
+      //외래키 참조 에러 ex) habit생성시 studyId존재하는지
       if (err.code === 'P2003') {
         return res.status(404).json({
           success: false,
