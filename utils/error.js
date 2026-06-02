@@ -8,6 +8,6 @@ export class HttpError extends Error {
 
 export class InvalidPasswordError extends HttpError {
   constructor(message = '비밀번호가 일치하지 않습니다') {
-    super(message, 401);
+    super(message, 400);
   }
 }
