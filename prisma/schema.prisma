@@ -38,7 +38,6 @@ model Habit {
   name String
 
   habitLogs HabitLog[]
-  isDone    Boolean    @default(false)
   studyId   Int
   study     Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
 

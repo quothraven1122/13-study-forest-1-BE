@@ -31,6 +31,9 @@ export const createHabit = asyncHandler(async (req, res) => {
       name: trimmedName,
       studyId: studyIdNum,
     },
+    include: {
+      habitLogs: true,
+    },
   });
 
   return res.status(201).json(habit);
@@ -53,9 +56,25 @@ export const getHabits = asyncHandler(async (req, res) => {
     },
   });
 
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
   const habits = await prisma.habit.findMany({
     where: {
       studyId: studyIdNum,
+    },
+    include: {
+      habitLogs: {
+        where: {
+          date: {
+            gte: todayStart,
+            lt: tomorrowStart,
+          },
+        },
+      },
     },
     orderBy: {
       id: 'asc',
@@ -67,7 +86,7 @@ export const getHabits = asyncHandler(async (req, res) => {
 
 export const updateHabit = asyncHandler(async (req, res) => {
   const { studyId, habitId } = req.params;
-  const { name, isDone } = req.body;
+  const { name } = req.body;
 
   const studyIdNum = Number(studyId);
   const habitIdNum = Number(habitId);
@@ -83,6 +102,9 @@ export const updateHabit = asyncHandler(async (req, res) => {
     where: {
       id: habitIdNum,
     },
+    include: {
+      habitLogs: true,
+    },
   });
 
   if (habit.studyId !== studyIdNum) {
@@ -91,13 +113,71 @@ export const updateHabit = asyncHandler(async (req, res) => {
     });
   }
 
-  const updatedHabit = await prisma.habit.update({
+  // 이름 수정 요청이면 name만 수정
+  if (trimmedName) {
+    const updatedHabit = await prisma.habit.update({
+      where: {
+        id: habitIdNum,
+      },
+      data: {
+        name: trimmedName,
+      },
+      include: {
+        habitLogs: true,
+      },
+    });
+
+    return res.status(200).json(updatedHabit);
+  }
+
+  // 오늘 날짜 시작/끝
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+  // 오늘 완료 기록이 있는지 확인
+  const todayLog = await prisma.habitLog.findFirst({
+    where: {
+      habitId: habitIdNum,
+      date: {
+        gte: todayStart,
+        lt: tomorrowStart,
+      },
+    },
+  });
+
+  // 오늘 기록이 있으면 삭제 = 미완료
+  if (todayLog) {
+    await prisma.habitLog.delete({
+      where: {
+        id: todayLog.id,
+      },
+    });
+  } else {
+    // 오늘 기록이 없으면 생성 = 완료
+    await prisma.habitLog.create({
+      data: {
+        habitId: habitIdNum,
+        date: new Date(),
+      },
+    });
+  }
+
+  const updatedHabit = await prisma.habit.findUnique({
     where: {
       id: habitIdNum,
     },
-    data: {
-      name: trimmedName || habit.name,
-      isDone: typeof isDone === 'boolean' ? isDone : habit.isDone,
+    include: {
+      habitLogs: {
+        where: {
+          date: {
+            gte: todayStart,
+            lt: tomorrowStart,
+          },
+        },
+      },
     },
   });
 
