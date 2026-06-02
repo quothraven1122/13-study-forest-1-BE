@@ -1,6 +1,6 @@
 import prisma from '../prisma/index.js';
 
-export const createHabit = async (req, res) => {
+const createHabit = async (req, res) => {
   try {
     const { studyId } = req.params;
     const { name } = req.body;
@@ -53,7 +53,7 @@ export const createHabit = async (req, res) => {
   }
 };
 
-export const getHabits = async (req, res, next) => {
+const getHabits = async (req, res, next) => {
   try {
     const { studyId } = req.params;
 
@@ -92,7 +92,7 @@ export const getHabits = async (req, res, next) => {
   }
 };
 
-export const updateHabit = async (req, res, next) => {
+const updateHabit = async (req, res, next) => {
   try {
     const { studyId, habitId } = req.params;
     const { name } = req.body;
@@ -140,7 +140,7 @@ export const updateHabit = async (req, res, next) => {
   }
 };
 
-export const deleteHabit = async (req, res, next) => {
+const deleteHabit = async (req, res, next) => {
   try {
     const { studyId, habitId } = req.params;
 
@@ -176,3 +176,5 @@ export const deleteHabit = async (req, res, next) => {
     next(error);
   }
 };
+
+export default { createHabit, getHabits, updateHabit, deleteHabit };

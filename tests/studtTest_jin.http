@@ -3,7 +3,7 @@
 GET {{baseUrl}}/studies?page=1
 
 ###
-PATCH {{baseUrl}}/studies/50
+PATCH {{baseUrl}}/studies/169
 Content-Type:application/json
 
 {
