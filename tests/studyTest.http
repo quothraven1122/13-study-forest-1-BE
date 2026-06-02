@@ -33,3 +33,41 @@ Content-Type: application/json
   "nickname":"홍길동2",
   "background":"이미지2"
 }
+
+### 스터디 삭제하기
+DELETE {{baseUrl}}/170
+Content-Type: application/json
+
+{
+  "password": "12312322"
+}
+
+### 오늘의 집중 페이지 api test 
+### studies의 name,nickname,point 가져오기 
+GET {{baseUrl}}/130/focus 
+
+
+### 포인트 patch
+PATCH {{baseUrl}}/130/focus
+Content-Type: application/json
+
+{
+  "points": 3
+}
+
+### 반응하기
+POST {{baseUrl}}/130/emoji
+Content-Type: application/json
+
+{
+  "emoji": "🔥"
+}
+
+### 습관 추가하기
+POST {{baseUrl}}/130/habits
+Content-Type: application/json
+
+{
+  "name": "카오스 벨룸 클리어하기"
+}
+
