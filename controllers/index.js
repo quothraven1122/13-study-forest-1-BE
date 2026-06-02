@@ -1,2 +1,4 @@
-export * from './study.controller.js';
-export * from './habit.controller.js';
+import studyController from './study.controller.js';
+import habitController from './habit.controller.js';
+
+export { studyController, habitController };

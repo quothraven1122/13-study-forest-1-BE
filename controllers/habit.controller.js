@@ -1,7 +1,7 @@
 import prisma from '../prisma/index.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
-export const createHabit = asyncHandler(async (req, res) => {
+const createHabit = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { name } = req.body;
 
@@ -34,7 +34,7 @@ export const createHabit = asyncHandler(async (req, res) => {
   });
 });
 
-export const getHabits = asyncHandler(async (req, res) => {
+const getHabits = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
 
   const studyIdNum = Number(studyId);
@@ -63,7 +63,7 @@ export const getHabits = asyncHandler(async (req, res) => {
   return res.status(200).json(habits);
 });
 
-export const updateHabit = asyncHandler(async (req, res) => {
+const updateHabit = asyncHandler(async (req, res) => {
   const { studyId, habitId } = req.params;
   const { name } = req.body;
 
@@ -108,7 +108,7 @@ export const updateHabit = asyncHandler(async (req, res) => {
   return res.status(200).json(updatedHabit);
 });
 
-export const deleteHabit = asyncHandler(async (req, res) => {
+const deleteHabit = asyncHandler(async (req, res) => {
   const { studyId, habitId } = req.params;
 
   const studyIdNum = Number(studyId);
@@ -141,3 +141,5 @@ export const deleteHabit = asyncHandler(async (req, res) => {
 
   return res.status(204).send();
 });
+
+export default { createHabit, getHabits, updateHabit, deleteHabit };

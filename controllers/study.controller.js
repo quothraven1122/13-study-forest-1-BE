@@ -4,7 +4,7 @@ import { getStartAndEndOfWeek } from '../utils/date.js';
 import { InvalidPasswordError } from '../utils/error.js';
 
 // ─── 전체 스터디 조회 ───
-export const getAllStudy = asyncHandler(async (req, res) => {
+const getAllStudy = asyncHandler(async (req, res) => {
   const { search, sort = 'recent', page = 1 } = req.query;
 
   // pagination
@@ -90,7 +90,7 @@ export const getAllStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 상세 조회 ───
-export const getStudyDetail = asyncHandler(async (req, res) => {
+const getStudyDetail = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { startOfWeek, endOfWeek } = getStartAndEndOfWeek();
 
@@ -100,19 +100,19 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
   });
 
   //스터디 관련 리액션 정보 불러오기
-  let reactions = await prisma.reaction.groupBy({
+  const reactionData = await prisma.reaction.groupBy({
     where: { studyId: Number(studyId) },
     _count: { emoji: true },
     by: ['emoji'],
     orderBy: { _count: { emoji: 'desc' } },
   });
-  reactions = reactions.reduce((acc, cur) => {
+  const reactions = reactionData.reduce((acc, cur) => {
     acc[cur.emoji] = cur._count.emoji;
     return acc;
   }, {});
 
   //스터디 관련 습관 로그 정보 불러오기
-  let habitLogs = await prisma.habit.findMany({
+  const habitLogData = await prisma.habit.findMany({
     where: { studyId: Number(studyId) },
     include: {
       habitLogs: {
@@ -120,7 +120,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
       },
     },
   });
-  habitLogs = habitLogs.reduce((acc, cur) => {
+  const habitLogs = habitLogData.reduce((acc, cur) => {
     acc[cur.id] = {
       name: cur.name,
       values: cur.habitLogs.map((log) => log.date),
@@ -132,7 +132,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
 });
 
 // ─── 비밀번호 확인 ───
-export const postPwCheck = asyncHandler(async (req, res) => {
+const postPwCheck = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { password: pwInput } = req.body;
 
@@ -147,7 +147,7 @@ export const postPwCheck = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 생성 ───
-export const createStudy = asyncHandler(async (req, res) => {
+const createStudy = asyncHandler(async (req, res) => {
   const { name, description, password, nickname, background } = req.body;
 
   if (!name || !description || !password || !nickname || !background) {
@@ -164,7 +164,7 @@ export const createStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 수정 ───
-export const updateStudy = asyncHandler(async (req, res) => {
+const updateStudy = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { name, description, nickname, background } = req.body;
 
@@ -177,7 +177,7 @@ export const updateStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 삭제 ───
-export const deleteStudy = asyncHandler(async (req, res) => {
+const deleteStudy = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { password } = req.body;
 
@@ -197,7 +197,7 @@ export const deleteStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 반응하기 ───
-export const createEmoji = asyncHandler(async (req, res) => {
+const createEmoji = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { emoji } = req.body;
 
@@ -213,7 +213,7 @@ export const createEmoji = asyncHandler(async (req, res) => {
 });
 
 // ─── 오늘의 집중 조회 ───
-export const getStudyFocus = asyncHandler(async (req, res) => {
+const getStudyFocus = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
 
   if (isNaN(Number(studyId))) {
@@ -233,7 +233,7 @@ export const getStudyFocus = asyncHandler(async (req, res) => {
 });
 
 // ─── 포인트 수정 ───
-export const patchStudyPoint = asyncHandler(async (req, res) => {
+const patchStudyPoint = asyncHandler(async (req, res) => {
   const { studyId } = req.params;
   const { points } = req.body;
 
@@ -263,3 +263,15 @@ export const patchStudyPoint = asyncHandler(async (req, res) => {
 
   return res.status(200).json(study);
 });
+
+export default {
+  getAllStudy,
+  getStudyDetail,
+  postPwCheck,
+  createStudy,
+  updateStudy,
+  deleteStudy,
+  createEmoji,
+  getStudyFocus,
+  patchStudyPoint,
+};
