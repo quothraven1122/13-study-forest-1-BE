@@ -18,6 +18,7 @@ export const createStudySchema = z.object({
     .trim()
     .min(1, '닉네임은 1글자 이상이어야 합니다')
     .max(20, '닉네임은 20글자 이하여야 합니다'),
+  background: z.string().min(1, '배경을 선택해주세요'),
 });
 
 /// 스터디 수정 유효성 검사
@@ -51,5 +52,16 @@ export const getAllStudyQuerySchema = z.object({
 
 /// studyId 유효성 검사
 export const studyIdParamSchema = z.object({
-  studyId: z.coerce.number().int().positive(),
+  studyId: z.coerce.number().int(),
+});
+
+/// 비밀번호 확인 유효성 검사
+
+export const checkPasswordSchema = z.object({
+  password: z.string().min(1, '비밀번호는 빈 칸일 수 없습니다'),
+});
+
+/// 포인트 수정 유효성 검사
+export const patchPointSchema = z.object({
+  points: z.number().int('points는 정수여야 합니다.').positive(),
 });
