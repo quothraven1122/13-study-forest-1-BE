@@ -103,19 +103,19 @@ export const getStudyDetail = async (req, res) => {
   });
 
   //스터디 관련 리액션 정보 불러오기
-  let reactions = await prisma.reaction.groupBy({
+  const reactionData = await prisma.reaction.groupBy({
     where: { studyId: Number(studyId) },
     _count: { emoji: true },
     by: ['emoji'],
     orderBy: { _count: { emoji: 'desc' } },
   });
-  reactions = reactions.reduce((acc, cur) => {
+  const reactions = reactionData.reduce((acc, cur) => {
     acc[cur.emoji] = cur._count.emoji;
     return acc;
   }, {});
 
   //스터디 관련 습관 로그 정보 불러오기
-  let habitLogs = await prisma.habit.findMany({
+  const habitLogData = await prisma.habit.findMany({
     where: { studyId: Number(studyId) },
     include: {
       habitLogs: {
@@ -123,7 +123,7 @@ export const getStudyDetail = async (req, res) => {
       },
     },
   });
-  habitLogs = habitLogs.reduce((acc, cur) => {
+  const habitLogs = habitLogData.reduce((acc, cur) => {
     acc[cur.id] = {
       name: cur.name,
       values: cur.habitLogs.map((log) => log.date),
