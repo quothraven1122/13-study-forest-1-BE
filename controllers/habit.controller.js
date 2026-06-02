@@ -20,6 +20,12 @@ export const createHabit = asyncHandler(async (req, res) => {
     });
   }
 
+  await prisma.study.findUniqueOrThrow({
+    where: {
+      id: studyIdNum,
+    },
+  });
+
   const habit = await prisma.habit.create({
     data: {
       name: trimmedName,
@@ -27,11 +33,7 @@ export const createHabit = asyncHandler(async (req, res) => {
     },
   });
 
-  return res.status(201).json({
-    id: habit.id,
-    name: habit.name,
-    studyId: habit.studyId,
-  });
+  return res.status(201).json(habit);
 });
 
 export const getHabits = asyncHandler(async (req, res) => {
@@ -65,7 +67,7 @@ export const getHabits = asyncHandler(async (req, res) => {
 
 export const updateHabit = asyncHandler(async (req, res) => {
   const { studyId, habitId } = req.params;
-  const { name } = req.body;
+  const { name, isDone } = req.body;
 
   const studyIdNum = Number(studyId);
   const habitIdNum = Number(habitId);
@@ -77,19 +79,12 @@ export const updateHabit = asyncHandler(async (req, res) => {
     });
   }
 
-  if (!trimmedName) {
-    return res.status(400).json({
-      message: '수정할 습관 이름이 필요합니다.',
-    });
-  }
-
   const habit = await prisma.habit.findUniqueOrThrow({
     where: {
       id: habitIdNum,
     },
   });
 
-  //zod 유효성 검사 적용시 아래의 studyIdNum => studyId
   if (habit.studyId !== studyIdNum) {
     return res.status(404).json({
       message: '해당 스터디의 습관을 찾을 수 없습니다.',
@@ -101,7 +96,8 @@ export const updateHabit = asyncHandler(async (req, res) => {
       id: habitIdNum,
     },
     data: {
-      name: trimmedName,
+      name: trimmedName || habit.name,
+      isDone: typeof isDone === 'boolean' ? isDone : habit.isDone,
     },
   });
 
@@ -126,7 +122,6 @@ export const deleteHabit = asyncHandler(async (req, res) => {
     },
   });
 
-  //위의 주석처리와 마찬가지
   if (habit.studyId !== studyIdNum) {
     return res.status(404).json({
       message: '해당 스터디의 습관을 찾을 수 없습니다.',
