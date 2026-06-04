@@ -4,33 +4,18 @@ import { studyIdParamSchema } from '../schemas/study.schema.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
 const createHabit = asyncHandler(async (req, res) => {
-  const { studyId } = req.params;
-  const { name } = req.body;
-
-  const studyIdNum = Number(studyId);
-  const trimmedName = name?.trim();
-
-  if (Number.isNaN(studyIdNum)) {
-    return res.status(400).json({
-      message: '잘못된 요청입니다.',
-    });
-  }
-
-  if (!trimmedName) {
-    return res.status(400).json({
-      message: '습관 이름이 필요합니다.',
-    });
-  }
+  const { studyId } = studyIdParamSchema.parse(req.params);
+  const { name } = habitSchema.parse(req.body);
 
   await prisma.study.findUniqueOrThrow({
     where: {
-      id: studyIdNum,
+      id: studyId,
     },
   });
 
   const habit = await prisma.habit.create({
     data: {
-      name: name,
+      name: name.trim(),
       studyId: studyId,
     },
     include: {
@@ -42,15 +27,7 @@ const createHabit = asyncHandler(async (req, res) => {
 });
 
 const getHabits = asyncHandler(async (req, res) => {
-  const { studyId } = req.params;
-
-  const studyIdNum = Number(studyId);
-
-  if (Number.isNaN(studyIdNum)) {
-    return res.status(400).json({
-      message: '잘못된 요청입니다.',
-    });
-  }
+  const { studyId } = studyIdParamSchema.parse(req.params);
 
   await prisma.study.findUniqueOrThrow({
     where: {
@@ -87,18 +64,10 @@ const getHabits = asyncHandler(async (req, res) => {
 });
 
 const updateHabit = asyncHandler(async (req, res) => {
-  const { studyId, habitId } = req.params;
-  const { name } = req.body;
+  const { studyId, habitId } = habitIdParamSchema.parse(req.params);
+  const { name } = habitSchema.partial().parse(req.body);
 
-  const studyIdNum = Number(studyId);
-  const habitIdNum = Number(habitId);
   const trimmedName = name?.trim();
-
-  if (Number.isNaN(studyIdNum) || Number.isNaN(habitIdNum)) {
-    return res.status(400).json({
-      message: '잘못된 요청입니다.',
-    });
-  }
 
   const habit = await prisma.habit.findUniqueOrThrow({
     where: {
@@ -109,7 +78,7 @@ const updateHabit = asyncHandler(async (req, res) => {
     },
   });
 
-  if (habit.studyId !== studyIdNum) {
+  if (habit.studyId !== studyId) {
     return res.status(404).json({
       message: '해당 스터디의 습관을 찾을 수 없습니다.',
     });
@@ -119,7 +88,7 @@ const updateHabit = asyncHandler(async (req, res) => {
   if (trimmedName) {
     const updatedHabit = await prisma.habit.update({
       where: {
-        id: habitIdNum,
+        id: habitId,
       },
       data: {
         name: trimmedName,
@@ -142,7 +111,7 @@ const updateHabit = asyncHandler(async (req, res) => {
   // 오늘 완료 기록이 있는지 확인
   const todayLog = await prisma.habitLog.findFirst({
     where: {
-      habitId: habitIdNum,
+      habitId: habitId,
       date: {
         gte: todayStart,
         lt: tomorrowStart,
@@ -161,7 +130,7 @@ const updateHabit = asyncHandler(async (req, res) => {
     // 오늘 기록이 없으면 생성 = 완료
     await prisma.habitLog.create({
       data: {
-        habitId: habitIdNum,
+        habitId: habitId,
         date: new Date(),
       },
     });
@@ -187,16 +156,7 @@ const updateHabit = asyncHandler(async (req, res) => {
 });
 
 const deleteHabit = asyncHandler(async (req, res) => {
-  const { studyId, habitId } = req.params;
-
-  const studyIdNum = Number(studyId);
-  const habitIdNum = Number(habitId);
-
-  if (Number.isNaN(studyIdNum) || Number.isNaN(habitIdNum)) {
-    return res.status(400).json({
-      message: '잘못된 요청입니다.',
-    });
-  }
+  const { studyId, habitId } = habitIdParamSchema.parse(req.params);
 
   const habit = await prisma.habit.findUniqueOrThrow({
     where: {
@@ -204,7 +164,7 @@ const deleteHabit = asyncHandler(async (req, res) => {
     },
   });
 
-  if (habit.studyId !== studyIdNum) {
+  if (habit.studyId !== studyId) {
     return res.status(404).json({
       message: '해당 스터디의 습관을 찾을 수 없습니다.',
     });

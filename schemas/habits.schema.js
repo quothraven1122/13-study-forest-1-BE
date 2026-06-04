@@ -10,5 +10,6 @@ export const habitSchema = z.object({
 
 /// habitId 유효성 검사
 export const habitIdParamSchema = z.object({
+  studyId: z.coerce.number().int().positive(),
   habitId: z.coerce.number().int().positive(),
 });

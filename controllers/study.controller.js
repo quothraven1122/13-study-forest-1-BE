@@ -13,12 +13,12 @@ import { getStartAndEndOfWeek } from '../utils/date.js';
 import { InvalidPasswordError } from '../utils/error.js';
 
 // ─── 전체 스터디 조회 ───
-export const getAllStudy = asyncHandler(async (req, res) => {
+const getAllStudy = asyncHandler(async (req, res) => {
   const {
     search,
     sort = 'recent',
     page = 1,
-  } = getAllStudyQuerySchema.parse(req.query); // Query 스트링 유효성 검사
+  } = getAllStudyQuerySchema.parse(req.query);
 
   // pagination
   const take = 6;
@@ -103,8 +103,8 @@ export const getAllStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 상세 조회 ───
-export const getStudyDetail = asyncHandler(async (req, res) => {
-  const { studyId } = studyIdParamSchema.parse(req.params); // zod studyId 검사
+const getStudyDetail = asyncHandler(async (req, res) => {
+  const { studyId } = studyIdParamSchema.parse(req.params);
   const { startOfWeek, endOfWeek } = getStartAndEndOfWeek();
 
   //스터디 상세 정보 불러오기
@@ -113,7 +113,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
   });
 
   //스터디 관련 리액션 정보 불러오기
-  let reactions = await prisma.reaction.groupBy({
+  const reactionData = await prisma.reaction.groupBy({
     where: { studyId: studyId },
     _count: { emoji: true },
     by: ['emoji'],
@@ -125,7 +125,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
   }, {});
 
   //스터디 관련 습관 로그 정보 불러오기
-  let habitLogs = await prisma.habit.findMany({
+  const habitLogData = await prisma.habit.findMany({
     where: { studyId: studyId },
     include: {
       habitLogs: {
@@ -145,10 +145,9 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
 });
 
 // ─── 비밀번호 확인 ───
-export const postPwCheck = asyncHandler(async (req, res) => {
+const postPwCheck = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
   const { password: pwInput } = checkPasswordSchema.parse(req.body);
-
   const pw = await prisma.study.findUniqueOrThrow({
     where: { id: studyId },
     select: { password: true },
@@ -160,7 +159,7 @@ export const postPwCheck = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 생성 ───
-export const createStudy = asyncHandler(async (req, res) => {
+const createStudy = asyncHandler(async (req, res) => {
   const { name, description, password, nickname, background } =
     createStudySchema.parse(req.body);
 
@@ -172,7 +171,7 @@ export const createStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 수정 ───
-export const updateStudy = asyncHandler(async (req, res) => {
+const updateStudy = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
   const { name, description, nickname, background } = updateStudySchema.parse(
     req.body
@@ -187,7 +186,7 @@ export const updateStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 스터디 삭제 ───
-export const deleteStudy = asyncHandler(async (req, res) => {
+const deleteStudy = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
   const { password } = checkPasswordSchema.parse(req.body);
 
@@ -207,10 +206,9 @@ export const deleteStudy = asyncHandler(async (req, res) => {
 });
 
 // ─── 반응하기 ───
-export const createEmoji = asyncHandler(async (req, res) => {
+const createEmoji = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
   const { emoji } = createReactionSchema.parse(req.body);
-
   const reaction = await prisma.reaction.create({
     data: { emoji, studyId: studyId },
   });
@@ -223,7 +221,7 @@ export const createEmoji = asyncHandler(async (req, res) => {
 });
 
 // ─── 오늘의 집중 조회 ───
-export const getStudyFocus = asyncHandler(async (req, res) => {
+const getStudyFocus = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
 
   const study = await prisma.study.findUniqueOrThrow({
@@ -239,7 +237,7 @@ export const getStudyFocus = asyncHandler(async (req, res) => {
 });
 
 // ─── 포인트 수정 ───
-export const patchStudyPoint = asyncHandler(async (req, res) => {
+const patchStudyPoint = asyncHandler(async (req, res) => {
   const { studyId } = studyIdParamSchema.parse(req.params);
   const { points } = patchPointSchema.parse(req.body);
 

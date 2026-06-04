@@ -1,4 +1,4 @@
-@baseURL=http://localhost:3000
+@baseURL = http://localhost:3000
 @contentType = application/json
 
 ### ==========================================
@@ -24,43 +24,41 @@ Content-Type: {{contentType}}
 }
 
 ### 1-4. 스터디 생성 (실패 - Zod: 누락에 따른 필수 한글 메시지 확인)
-# 스키마의 required_error로 설정한 커스텀 한글 문구들이 잘 나오는지 확인해 봐!
 POST {{baseURL}}/studies HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "name": "누락 방"
+  "name": "",
+  "description": "",
+  "password": "",
+  "nickname": "",
+  "background": ""
 }
-
-
 ### ==========================================
 ### 2. 스터디 단건 조작 (/studies/:studyId)
 ### ==========================================
 
 ### 2-1. 스터디 상세 조회 (정상)
-# ※ 주의: URL의 '1' 자리는 실제 DB에 존재하는 ID로 테스트해 줘!
-GET {{baseURL}}/studies/176 HTTP/1.1
+GET {{baseURL}}/studies/180 HTTP/1.1
 
 ### 2-2. 스터디 상세 조회 (실패 - Zod: studyId 파라미터 타입 에러)
 GET {{baseURL}}/studies/abc HTTP/1.1
 
 ### 2-3. 스터디 상세 조회 (실패 - Prisma: 존재하지 않는 ID 조회)
-# findUniqueOrThrow가 작동해서 전역 에러 핸들러로 예외 처리가 되는지 확인
 GET {{baseURL}}/studies/999999 HTTP/1.1
 
-
 ### 2-4. 스터디 수정 (정상)
-PATCH {{baseURL}}/studies/176 HTTP/1.1
+PATCH  {{baseURL}}/studies/180 HTTP/1.1
 Content-Type: {{contentType}}
 
 {
   "name": "이름 바꾼 모각코방",
-  "description": "설명을 업데이트했습니다."
+  "description": "설명을 업데이트했습니다.",
+  "nickname": "코딩상어"
 }
 
-
 ### 2-5. 비밀번호 확인 (정상)
-POST {{baseURL}}/studies/176/confirm-pw HTTP/1.1
+POST {{baseURL}}/studies/180/confirm-pw HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -68,8 +66,7 @@ Content-Type: {{contentType}}
 }
 
 ### 2-6. 비밀번호 확인 (실패 - 로직: 잘못된 비밀번호 입력)
-# InvalidPasswordError가 터지면서 정상적으로 차단되어야 해
-POST {{baseURL}}/studies/176/confirm-pw HTTP/1.1
+POST {{baseURL}}/studies/180/confirm-pw HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -77,15 +74,13 @@ Content-Type: {{contentType}}
 }
 
 ### 2-7. 비밀번호 확인 (실패 - Zod: 바디 검증 누락)
-POST {{baseURL}}/studies/176/confirm-pw HTTP/1.1
+POST {{baseURL}}/studies/180/confirm-pw HTTP/1.1
 Content-Type: {{contentType}}
 
 {}
 
-
 ### 2-8. 스터디 삭제 (정상)
-# 테스트의 마지막 단계에 실행하는 걸 추천해!
-DELETE {{baseURL}}/studies/176 HTTP/1.1
+DELETE {{baseURL}}/studies/180 HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -98,44 +93,92 @@ Content-Type: {{contentType}}
 ### ==========================================
 
 ### 3-1. 반응하기 (정상)
-POST {{baseURL}}/studies/174/emoji HTTP/1.1
+POST {{baseURL}}/studies/180/emoji HTTP/1.1
 Content-Type: {{contentType}}
 
 {
   "emoji": "🔥"
 }
 
+### 3-2. 반응하기 (실패 - Zod: 이모지 데이터 누락)
+POST {{baseURL}}/studies/180/emoji HTTP/1.1
+Content-Type: {{contentType}}
 
-### 3-2. 오늘의 집중 조회 (정상)
-GET {{baseURL}}/studies/174/focus HTTP/1.1
+{}
 
+### 3-3. 오늘의 집중 조회 (정상)
+GET {{baseURL}}/studies/180/focus HTTP/1.1
 
-### 3-3. 포인트 수정 (정상 - 포인트 증가)
-PATCH {{baseURL}}/studies/174/focus HTTP/1.1
+### 3-4. 포인트 수정 (정상 - 포인트 증가)
+PATCH {{baseURL}}/studies/180/focus HTTP/1.1
 Content-Type: {{contentType}}
 
 {
   "points": 5
 }
 
-### 3-4. 포인트 수정 (정상 - 포인트 감소)
-PATCH {{baseURL}}/studies/174/focus HTTP/1.1
+### 3-5. 포인트 수정 (정상 - 포인트 감소)
+PATCH {{baseURL}}/studies/180/focus HTTP/1.1
 Content-Type: {{contentType}}
 
 {
   "points": -3
 }
 
-### 3-5. 포인트 수정 (실패 - Zod: 정수가 아닌 소수점 입력)
-PATCH {{baseURL}}/studies/174/focus HTTP/1.1
+### 3-6. 포인트 수정 (실패 - Zod: 정수가 아닌 소수점 입력)
+PATCH {{baseURL}}/studies/180/focus HTTP/1.1
 Content-Type: {{contentType}}
 
 {
   "points": 2.5
 }
 
-### 3-6. 포인트 수정 (실패 - Zod: points 데이터 누락)
-PATCH {{baseURL}}/studies/174/focus HTTP/1.1
+### 3-7. 포인트 수정 (실패 - Zod: points 데이터 누락)
+PATCH {{baseURL}}/studies/180/focus HTTP/1.1
+Content-Type: {{contentType}}
+
+
+### ==========================================
+### 4. 습관 조작 기능 (/studies/:studyId/habits)
+### ==========================================
+
+### 4-1. 습관 생성 (정상)
+POST {{baseURL}}/studies/181/habits HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "name": "매일 알고리즘 1문제 풀기"
+}
+
+### 4-2. 습관 생성 (실패 - Zod: 습관 이름 누락)
+POST {{baseURL}}/studies/180/habits HTTP/1.1
 Content-Type: {{contentType}}
 
 {}
+
+### 4-3. 습관 목록 조회 (정상 - 오늘 하루치 완료 로그 포함)
+GET {{baseURL}}/studies/180/habits HTTP/1.1
+
+### 4-4. 습관 수정 (정상 - name이 있어서 이름만 수정)
+
+PATCH {{baseURL}}/studies/181/habits/332 HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "name": "매일 알고리즘 1000문제 풀기"
+}
+
+### 4-5. 습관 토글 (정상 - name이 없어서 완료/미완료 토글 처리)
+PATCH {{baseURL}}/studies/181/habits/332 HTTP/1.1
+Content-Type: {{contentType}}
+
+{}
+
+### 4-6. 습관 수정/토글 (실패 - Zod: habitId 파라미터 타입 에러)
+PATCH {{baseURL}}/studies/181/habits/abc HTTP/1.1
+Content-Type: {{contentType}}
+
+{}
+
+### 4-7. 습관 삭제 (정상)
+DELETE {{baseURL}}/studies/181/habits/332 HTTP/1.1
