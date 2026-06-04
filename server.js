@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_LOCAL }));
 app.use(express.json());
 
 app.get('/studies', studyController.getAllStudy);
