@@ -119,7 +119,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
     by: ['emoji'],
     orderBy: { _count: { emoji: 'desc' } },
   });
-  reactions = reactions.reduce((acc, cur) => {
+  const reactions = reactionData.reduce((acc, cur) => {
     acc[cur.emoji] = cur._count.emoji;
     return acc;
   }, {});
@@ -133,7 +133,7 @@ export const getStudyDetail = asyncHandler(async (req, res) => {
       },
     },
   });
-  habitLogs = habitLogs.reduce((acc, cur) => {
+  const habitLogs = habitLogData.reduce((acc, cur) => {
     acc[cur.id] = {
       name: cur.name,
       values: cur.habitLogs.map((log) => log.date),
@@ -257,3 +257,15 @@ export const patchStudyPoint = asyncHandler(async (req, res) => {
 
   return res.status(200).json(study);
 });
+
+export default {
+  getAllStudy,
+  getStudyDetail,
+  postPwCheck,
+  createStudy,
+  updateStudy,
+  deleteStudy,
+  createEmoji,
+  getStudyFocus,
+  patchStudyPoint,
+};
