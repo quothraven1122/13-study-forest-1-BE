@@ -28,7 +28,7 @@ app.patch('/studies/:studyId/habits/:habitId', habitController.updateHabit);
 app.delete('/studies/:studyId/habits/:habitId', habitController.deleteHabit);
 
 app.get('/studies/:studyId/focus', studyController.getStudyFocus);
-app.patch(/studies/:studyId/focus, studyController.patchStudyPoint);
+app.patch('/studies/:studyId/focus', studyController.patchStudyPoint);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('서버 실행 중');
