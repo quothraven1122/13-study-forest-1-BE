@@ -38,9 +38,8 @@ model Habit {
   name String
 
   habitLogs HabitLog[]
-
-  studyId Int
-  study   Study @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId   Int
+  study     Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
 
   @@map("habits")
 }

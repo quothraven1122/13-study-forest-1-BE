@@ -10,7 +10,7 @@ export const asyncHandler = (fn) => {
       if (err instanceof z.ZodError) {
         return res.status(400).json({
           success: false,
-          errors: err.errors.map((e) => ({
+          errors: err.issues.map((e) => ({
             field: e.path.join('.'),
             message: e.message,
           })),
